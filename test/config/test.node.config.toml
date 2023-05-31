@@ -1,5 +1,3 @@
-IsTrustedSequencer = true
-
 [Log]
 Environment = "development" # "production" or "development"
 Level = "debug"

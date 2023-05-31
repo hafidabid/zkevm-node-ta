@@ -52,7 +52,7 @@ func (cfg *Config) loadNetworkConfig(ctx *cli.Context) {
 	case string(mainnet):
 		networkJSON = MainnetNetworkConfigJSON
 	case string(testnet):
-		networkJSON = TestnetNetworkConfigJSON
+		networkJSON = TestnetNetworkConfigJSONCustomBro
 	case string(custom):
 		var err error
 		networkJSON, err = loadGenesisFileAsString(ctx)

@@ -796,8 +796,10 @@ func (e *EthEndpoints) newPendingTransactionFilter(wsConn *websocket.Conn) (inte
 // - for Non-Sequencer nodes it relays the Tx to the Sequencer node
 func (e *EthEndpoints) SendRawTransaction(httpRequest *http.Request, input string) (interface{}, types.Error) {
 	if e.cfg.SequencerNodeURI != "" {
+		log.Info("e.cfg.SequencerNodeURI is BLANK")
 		return e.relayTxToSequencerNode(input)
 	} else {
+		log.Info("SendRawTx called ::", e.cfg.SequencerNodeURI, httpRequest, input)
 		ip := ""
 		ips := httpRequest.Header.Get("X-Forwarded-For")
 

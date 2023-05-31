@@ -1,3 +1,5 @@
+IsTrustedSequencer = true
+
 [Log]
 Environment = "development" # "production" or "development"
 Level = "info"
@@ -29,10 +31,10 @@ PollMinAllowedGasPriceInterval = "15s"
 	MaxConns = 200
 
 [Etherman]
-URL = "http://your.L1node.url"
+URL = "http://10.8.101.30:7545"
 MultiGasProvider = false
 	[Etherman.Etherscan]
-		ApiKey = ""
+		ApiKey = "U27FUPHCM9H95VJUNMGV4FXJ5RCRN6SGP7"
 
 [RPC]
 Host = "0.0.0.0"

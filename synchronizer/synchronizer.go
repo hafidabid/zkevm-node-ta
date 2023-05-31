@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v4"
 	"math/big"
 	"strings"
 	"time"
@@ -16,7 +17,6 @@ import (
 	"github.com/0xPolygonHermez/zkevm-node/state/metrics"
 	"github.com/ethereum/go-ethereum/common"
 	ethTypes "github.com/ethereum/go-ethereum/core/types"
-	"github.com/jackc/pgx/v4"
 )
 
 // Synchronizer connects L1 and L2
@@ -78,6 +78,8 @@ func (s *ClientSynchronizer) Sync() error {
 		log.Errorf("error creating db transaction to get latest block. Error: %v", err)
 		return err
 	}
+
+	log.Info("woiii cek context gan", s.ctx, dbTx)
 	lastEthBlockSynced, err := s.state.GetLastBlock(s.ctx, dbTx)
 	if err != nil {
 		if errors.Is(err, state.ErrStateNotSynchronized) {
@@ -217,6 +219,8 @@ func (s *ClientSynchronizer) Sync() error {
 				waitDuration = s.cfg.SyncInterval.Duration
 			}
 			//Sync L1Blocks
+			log.Info("WOI IKI LO LAST ETH MU")
+			log.Info(lastEthBlockSynced)
 			if lastEthBlockSynced, err = s.syncBlocks(lastEthBlockSynced); err != nil {
 				log.Warn("error syncing blocks: ", err)
 				lastEthBlockSynced, err = s.state.GetLastBlock(s.ctx, nil)
