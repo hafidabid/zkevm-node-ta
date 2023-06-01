@@ -32,7 +32,7 @@ PollMinAllowedGasPriceInterval = "15s"
 
 [Etherman]
 URL = "http://10.8.101.30:7545"
-MultiGasProvider = false
+MultiGasProvider = true
 	[Etherman.Etherscan]
 		ApiKey = "U27FUPHCM9H95VJUNMGV4FXJ5RCRN6SGP7"
 
@@ -42,8 +42,8 @@ Port = 8545
 ReadTimeout = "60s"
 WriteTimeout = "60s"
 MaxRequestsPerIPAndSecond = 5000
-SequencerNodeURI = "https://rpc.public.zkevm-test.net/"
-EnableL2SuggestedGasPricePolling = false
+SequencerNodeURI = ""
+EnableL2SuggestedGasPricePolling = true
 	[RPC.WebSockets]
 		Enabled = true
 		Port = 8546

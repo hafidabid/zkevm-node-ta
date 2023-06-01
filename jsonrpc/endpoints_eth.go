@@ -181,12 +181,15 @@ func (e *EthEndpoints) GasPrice() (interface{}, types.Error) {
 	}
 	gasPrice, err := e.pool.GetGasPrice(ctx)
 	if err != nil {
+		log.Error("error gas price", gasPrice, err)
 		return "0x0", nil
 	}
+	log.Info("gas price is", gasPrice)
 	return hex.EncodeUint64(gasPrice), nil
 }
 
 func (e *EthEndpoints) getPriceFromSequencerNode() (interface{}, types.Error) {
+	log.Info("Sequencer Node URI IS :: ", e.cfg.SequencerNodeURI)
 	res, err := client.JSONRPCCall(e.cfg.SequencerNodeURI, "eth_gasPrice")
 	if err != nil {
 		return rpcErrorResponse(types.DefaultErrorCode, "failed to get gas price from sequencer node", err)
