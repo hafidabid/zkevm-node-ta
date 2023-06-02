@@ -1,3 +1,5 @@
+IsTrustedSequencer = true
+
 [Log]
 Environment = "development" # "production" or "development"
 Level = "info"
@@ -29,10 +31,10 @@ PollMinAllowedGasPriceInterval = "15s"
 	MaxConns = 200
 
 [Etherman]
-URL = "http://your.L1node.url"
-MultiGasProvider = false
+URL = "http://10.8.101.30:7545"
+MultiGasProvider = true
 	[Etherman.Etherscan]
-		ApiKey = ""
+		ApiKey = "U27FUPHCM9H95VJUNMGV4FXJ5RCRN6SGP7"
 
 [RPC]
 Host = "0.0.0.0"
@@ -40,8 +42,8 @@ Port = 8545
 ReadTimeout = "60s"
 WriteTimeout = "60s"
 MaxRequestsPerIPAndSecond = 5000
-SequencerNodeURI = "https://rpc.public.zkevm-test.net/"
-EnableL2SuggestedGasPricePolling = false
+SequencerNodeURI = ""
+EnableL2SuggestedGasPricePolling = true
 	[RPC.WebSockets]
 		Enabled = true
 		Port = 8546

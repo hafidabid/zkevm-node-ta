@@ -1,5 +1,6 @@
 package config
 
+// genesisBlockNumber is block number where contract was created\]
 // TestnetNetworkConfigJSON is the hardcoded network configuration to be used for the official mainnet setup
 const TestnetNetworkConfigJSON = `
 {

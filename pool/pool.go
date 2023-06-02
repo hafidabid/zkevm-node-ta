@@ -121,7 +121,9 @@ func (p *Pool) StartPollingMinSuggestedGasPrice(ctx context.Context) {
 
 // AddTx adds a transaction to the pool with the pending state
 func (p *Pool) AddTx(ctx context.Context, tx types.Transaction, ip string) error {
+	log.Infof("ADD TX HAS BEEN EXECUTED, HERE IS THE DEBUG -> %+v || %s", tx, ip)
 	poolTx := NewTransaction(tx, ip, false, p)
+	log.Infof("ADD TX POOL TX IS == %+v", *poolTx)
 	if err := p.validateTx(ctx, *poolTx); err != nil {
 		return err
 	}
@@ -256,6 +258,7 @@ func (p *Pool) IsTxPending(ctx context.Context, hash common.Hash) (bool, error) 
 func (p *Pool) validateTx(ctx context.Context, poolTx Transaction) error {
 	// check chain id
 	txChainID := poolTx.ChainId().Uint64()
+	log.Info("DEBUGGING CHAIN ID PROBLEM WHEN TRY TO TX chainId", txChainID, " && p-chainId", p.chainID)
 	if txChainID != p.chainID && txChainID != 0 {
 		return ErrInvalidChainID
 	}
@@ -274,6 +277,8 @@ func (p *Pool) validateTx(ctx context.Context, poolTx Transaction) error {
 	p.minSuggestedGasPriceMux.RLock()
 	gasPriceCmp := poolTx.GasPrice().Cmp(p.minSuggestedGasPrice)
 	p.minSuggestedGasPriceMux.RUnlock()
+	// TODO:: investigate this code
+	log.Info("Minimum gas should be used is ", p.minSuggestedGasPrice, poolTx.GasPrice())
 	if gasPriceCmp == -1 {
 		return ErrGasPrice
 	}

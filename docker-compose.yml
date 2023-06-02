@@ -25,6 +25,8 @@ services:
       - 9091:9091 # needed if metrics enabled
     environment:
       - ZKEVM_NODE_ETHERMAN_URL=${ZKEVM_NODE_ETHERMAN_URL}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ${ZKEVM_ADVANCED_CONFIG_DIR:-./config/environments/public}/public.node.config.toml:/app/config.toml
     command:
@@ -47,6 +49,8 @@ services:
           memory: 512M
     environment:
       - ZKEVM_NODE_ETHERMAN_URL=${ZKEVM_NODE_ETHERMAN_URL}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ${ZKEVM_ADVANCED_CONFIG_DIR:-./config/environments/public}/public.node.config.toml:/app/config.toml
     command:
@@ -64,11 +68,13 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - 5432:5432
+      - 5492:5432
     volumes:
       - ./db/scripts/init_prover_db.sql:/docker-entrypoint-initdb.d/init.sql
       - ${ZKEVM_NODE_STATEDB_DATA_DIR}:/var/lib/postgresql/data
       - ${ZKEVM_ADVANCED_CONFIG_DIR:-./config/environments/public}/postgresql.conf:/etc/postgresql.conf
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - POSTGRES_USER=state_user
       - POSTGRES_PASSWORD=state_password
@@ -90,7 +96,9 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - 5433:5432
+      - 5493:5432
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ${ZKEVM_NODE_POOLDB_DATA_DIR}:/var/lib/postgresql/data
     environment:
@@ -109,10 +117,32 @@ services:
     depends_on:
       zkevm-state-db:
         condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 50061:50061 # MT
       - 50071:50071 # Executor
+
     volumes:
       - ${ZKEVM_ADVANCED_CONFIG_DIR:-./config/environments/public}/public.prover.config.json:/usr/src/app/config.json
     command: >
       zkProver -c /usr/src/app/config.json
+
+
+  # coba running sequencer, semoga bisa heheh
+  zkevm-sequencer:
+    container_name: zkevm-sequencer
+    image: zkevm-node
+    ports:
+      - 9092:9091 # needed if metrics enabled
+      - 6060:6060
+    environment:
+      - ZKEVM_NODE_STATEDB_HOST=zkevm-state-db
+      - ZKEVM_NODE_POOL_DB_HOST=zkevm-pool-db
+    volumes:
+      - ./config/environments/public/public.node.config.toml:/app/config.toml
+      - ./config/environments/public/genesis.json:/app/genesis.json
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "/app/zkevm-node run --network custom --custom-network-file /app/genesis.json --cfg /app/config.toml"

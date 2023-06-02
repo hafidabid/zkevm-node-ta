@@ -5,6 +5,8 @@ package polygonzkevm
 
 import (
 	"errors"
+	"fmt"
+	"github.com/0xPolygonHermez/zkevm-node/log"
 	"math/big"
 	"strings"
 
@@ -388,7 +390,13 @@ func (_Polygonzkevm *PolygonzkevmCaller) ChainID(opts *bind.CallOpts) (uint64, e
 	var out []interface{}
 	err := _Polygonzkevm.contract.Call(opts, &out, "chainID")
 
+	fmt.Println("============HAHA===========")
+	fmt.Println(opts,"\n")
+	fmt.Println(out, "\n-----------END OF HAHA------------")
+
 	if err != nil {
+		log.Debug("ada error di polygonzkevm.go:393")
+		log.Fatal(err)
 		return *new(uint64), err
 	}
 
